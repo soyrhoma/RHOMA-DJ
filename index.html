@@ -750,8 +750,8 @@
         <button class="np-play" id="npPlayBtn" type="button" aria-label="Reproducir">▶</button>
         <div class="eq" id="npEq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
         <div class="np-info">
-          <div class="label" id="npLabel">tocá play: neoperreo</div>
-          <small>set en vivo de RHOMA</small>
+          <div class="label" id="npLabel">Tocá play para escuchar</div>
+          <small id="npTrack">Neoperreo y Reggaeton Old School</small>
         </div>
       </div>
       <div id="ytAudioPlayer" style="position:absolute; width:1px; height:1px; overflow:hidden;"></div>
@@ -957,7 +957,7 @@
           const playing = e.data === YT.PlayerState.PLAYING;
           npEq.classList.toggle('playing', playing);
           npBtn.textContent = playing ? '⏸' : '▶';
-          npLabel.textContent = playing ? 'ahora sonando: neoperreo' : 'pausado: neoperreo';
+          npLabel.textContent = playing ? 'Está sonando:' : 'Tocá play para escuchar';
         }
       }
     });
