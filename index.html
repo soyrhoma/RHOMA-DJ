@@ -326,10 +326,13 @@
   .eq{ display: flex; align-items: flex-end; gap: 3px; height: 26px; }
   .eq span{
     width: 5px;
+    height: 20%;
     background: linear-gradient(180deg, var(--fucsia-chrome), var(--fucsia));
     border-radius: 2px;
     animation: eq 1s ease-in-out infinite;
+    animation-play-state: paused;
   }
+  .eq.playing span{ animation-play-state: running; }
   .eq span:nth-child(1){ animation-delay: -0.6s; }
   .eq span:nth-child(2){ animation-delay: -0.3s; }
   .eq span:nth-child(3){ animation-delay: -0.9s; }
@@ -342,6 +345,19 @@
   .np-row{ display: flex; align-items: center; gap: 12px; }
   .np-info .label{ font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: 0.03em; }
   .np-info small{ font-family: 'Space Mono', monospace; color: var(--gris); font-size: 0.62rem; text-transform: uppercase; }
+  .np-play{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(120deg, var(--fucsia), var(--magenta));
+    box-shadow: 0 6px 18px rgba(232,0,122,0.4), inset 1px 1px 0 rgba(255,255,255,0.4);
+    color: #fff;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    border: none;
+    cursor: pointer;
+  }
+  .np-play:active{ transform: scale(0.94); }
 
   .quick-links{ list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .quick-links a{
@@ -731,12 +747,14 @@
     </div>
     <div class="win-body">
       <div class="np-row">
-        <div class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <button class="np-play" id="npPlayBtn" type="button" aria-label="Reproducir">▶</button>
+        <div class="eq" id="npEq" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
         <div class="np-info">
-          <div class="label">ahora sonando: neoperreo</div>
-          <small>vibe del set en vivo</small>
+          <div class="label" id="npLabel">tocá play: neoperreo</div>
+          <small>set en vivo de RHOMA</small>
         </div>
       </div>
+      <div id="ytAudioPlayer" style="position:absolute; width:1px; height:1px; overflow:hidden;"></div>
     </div>
   </div>
 
@@ -921,6 +939,43 @@
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   sections.forEach(s => observer.observe(s));
+
+  // ---- Now playing: reproductor de audio real (YouTube oculto) ----
+  let ytPlayer = null;
+  let ytReady = false;
+  const npBtn = document.getElementById('npPlayBtn');
+  const npEq = document.getElementById('npEq');
+  const npLabel = document.getElementById('npLabel');
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('ytAudioPlayer', {
+      videoId: '6WzVcUARW5I',
+      playerVars: { playsinline: 1 },
+      events: {
+        onReady: function(){ ytReady = true; },
+        onStateChange: function(e){
+          const playing = e.data === YT.PlayerState.PLAYING;
+          npEq.classList.toggle('playing', playing);
+          npBtn.textContent = playing ? '⏸' : '▶';
+          npLabel.textContent = playing ? 'ahora sonando: neoperreo' : 'pausado: neoperreo';
+        }
+      }
+    });
+  };
+
+  const ytScript = document.createElement('script');
+  ytScript.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(ytScript);
+
+  npBtn.addEventListener('click', function(){
+    if (!ytReady || !ytPlayer) return;
+    const state = ytPlayer.getPlayerState();
+    if (state === YT.PlayerState.PLAYING){
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  });
 </script>
 
 </body>
