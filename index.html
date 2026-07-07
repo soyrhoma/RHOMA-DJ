@@ -276,30 +276,6 @@
     50%{ transform: translateY(8px); opacity:1; }
   }
 
-  /* ============ Info strip ============ */
-  .info-strip{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 20px 30px;
-  }
-  .info-item{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    background: linear-gradient(90deg, rgba(232,0,122,0.15), rgba(107,15,42,0.15));
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 6px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .info-item .emoji{ font-size: 1.1rem; }
-
   /* ============ Secciones generales ============ */
   .wrap{
     padding: 0 20px 40px;
@@ -637,7 +613,6 @@
   }
 
   @media (min-width: 720px){
-    .info-strip{ grid-template-columns: repeat(3, 1fr); }
     .social-grid{ grid-template-columns: repeat(3, 1fr); }
   }
 </style>
@@ -726,12 +701,6 @@
 </section>
 
 <div class="zebra-strip" aria-hidden="true"></div>
-
-<div class="info-strip">
-  <div class="info-item"><span class="emoji">🎧</span> Sets personalizados</div>
-  <div class="info-item"><span class="emoji">🔥</span> DJ desde 2023</div>
-  <div class="info-item"><span class="emoji">🎉</span> Fiestas y eventos culturales</div>
-</div>
 
 <div class="wrap">
   <div class="win" id="bio">
